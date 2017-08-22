@@ -41,7 +41,7 @@ class PairSoftcore : public Pair {
   double *lambdanode; // lambda value at each node
   double *evdwlnode;  // total pairwise interaction energy at each node
   double *etailnode;  // tail correction for energy at each node
-
+  double *ecoulnode;  // total pairwise interaction energy at each node Added by ANa
   void allocate();
   void add_node_to_grid(double);
 };
