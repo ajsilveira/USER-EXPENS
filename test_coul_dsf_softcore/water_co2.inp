@@ -9,9 +9,39 @@ atom_style	full
 bond_style	harmonic
 angle_style	harmonic
 
+#variable	style_1 string "hybrid/softcore lj/cut/coul/dsf/softcore 0 10"
+#variable	coeff_1 string "lj/cut/coul/dsf/softcore"
+#variable	style_2 string "lj/cut/coul/dsf 0 10"
+#variable	coeff_2 string "lj/cut/coul/dsf"
 
-pair_style	hybrid/softcore lj/cut/coul/dsf/softcore 0.0 ${rc} lj/cut/coul/dsf 0.0 ${rc}
+#variable	style_1 string "hybrid/softcore lj/cut/coul/dsf 0 10"
+#variable	coeff_1 string "lj/cut/coul/dsf 1"
+#variable	style_2 string "lj/cut/coul/dsf 0 10"
+#variable	coeff_2 string "lj/cut/coul/dsf 2"
+
+variable	style_1 string "lj/cut/coul/dsf/softcore 0 10"
+variable	coeff_1 string ""
+variable	style_2 string ""
+variable	coeff_2 string ""
+
+#variable	style_1 string "hybrid lj/cut/coul/dsf 0 10"
+#variable	coeff_1 string "lj/cut/coul/dsf 1"
+#variable	style_2 string "lj/cut/coul/dsf 0 10"
+#variable	coeff_2 string "lj/cut/coul/dsf 2"
+
+pair_style	${style_1} ${style_2}
 read_data	water_co2.lmp
+
+pair_coeff	1 1 ${coeff_2} 0.0000 0.0000 # w_HW w_HW
+pair_coeff	1 2 ${coeff_2} 0.0000000000000000 1.5753500000000000 # w_HW w_OW
+pair_coeff	1 3 ${coeff_1} 0.0000000000000000 1.3999999999999999 # w_HW s_C_co2
+pair_coeff	1 4 ${coeff_1} 0.0000000000000000 1.5249999999999999 # w_HW s_O_co2
+pair_coeff	2 2 ${coeff_2} 0.1520 3.1507 # w_OW w_OW
+pair_coeff	2 3 ${coeff_1} 9.0307727390295897E-002 2.9753499999999997 # w_OW s_C_co2
+pair_coeff	2 4 ${coeff_1} 0.15447442128973973 3.1003499999999997 # w_OW s_O_co2
+pair_coeff	3 3 ${coeff_2} 0.0536545107 2.8 # s_C_co2 s_C_co2
+pair_coeff	3 4 ${coeff_2} 9.1777854780312737E-002 2.9249999999999998 # s_C_co2 s_O_co2
+pair_coeff	4 4 ${coeff_2} 0.1569891239 3.05 # s_O_co2 s_O_co2
 
 timestep 	1
 
@@ -23,11 +53,11 @@ delete_bonds    all angle 1
 delete_bonds    all bond 2
 delete_bonds    all angle 2
 
-pair_modify     pair lj/cut/coul/dsf/softcore alpha 0.5 n 1 p 1 lambda 1.0
-pair_modify     pair lj/cut/coul/dsf/softcore set_grid 5 0.0 0.1 0.4 0.5 1.0
+#pair_modify     pair lj/cut/coul/dsf/softcore alpha 0.5 n 1 p 1 lambda 1.0
+#pair_modify     pair lj/cut/coul/dsf/softcore set_grid 5 0.0 0.1 0.4 0.5 1.0
 
 fix		1 all rigid/nvt/small molecule temp 300 300 100
-compute         E all softcore/grid
+#compute         E all softcore/grid
 
 thermo		1
 
@@ -41,6 +71,6 @@ compute         press all pressure thermo_temp virial
 variable	delta_e equal round(10000*(c_pe-c_thermo_pe))
 variable	delta_p equal round(10000*(c_press-v_press))
 
-thermo_style	custom step temp pe ecoul evdwl c_E[*] # c_pe v_delta_e c_press v_press v_delta_p 
+thermo_style	custom step temp pe ecoul evdwl #c_E[*] # c_pe v_delta_e c_press v_press v_delta_p 
 
 run		0

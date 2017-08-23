@@ -47,7 +47,7 @@ class PairLJCutCoulDSFSoftcore : public PairSoftcore {
   double **lj1,**lj2,**lj3,**lj4,**offset;
 
   double cut_coul,cut_coulsq;
-  double alpha;
+  double damp;
   double f_shift,e_shift;
 
   virtual void allocate();
