@@ -32,6 +32,7 @@ class PairHybridSoftcore : public PairHybrid {
  public:
   PairHybridSoftcore(class LAMMPS *);
   void modify_params(int narg, char **arg);
+  void setup();
 };
 
 }

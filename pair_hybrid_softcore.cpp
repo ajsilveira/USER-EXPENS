@@ -93,4 +93,23 @@ void PairHybridSoftcore::modify_params(int narg, char **arg)
   }
 }
 
+/* ----------------------------------------------------------------------
+   invoke setup for each sub-style
+------------------------------------------------------------------------- */
+
+void PairHybridSoftcore::setup()
+{
+  int total = 0;
+  int enabled = 0;
+  for (int m = 0; m < nstyles; m++) {
+    styles[m]->setup();
+    if (strcmp(keywords[m],"lj/cut/coul/dsf/linear") == 0) {
+      total++;
+      enabled += styles[m]->single_enable;
+    }
+  }
+  if (enabled < total-1)
+    error->all(FLERR,"self-energy cannot be enabled in multiple pair substyles");
+}
+
 /* ---------------------------------------------------------------------- */
